@@ -1,6 +1,6 @@
-# Preliminary Auxiliary Marker-Lamp Controller
+# Auxiliary Marker-Lamp Controller
 
-Status: design concept updated with initial vehicle and load measurements.
+Status: Revision A fabrication design.
 
 ## Confirmed measurements
 
@@ -32,13 +32,9 @@ pulses while rejecting isolated diagnostic pulses.
  C4483-10
  VT-GN
     |
-  F1 100 mA
-    |
- reverse/transient protection
-    |
  PWM-compatible optocoupler input
     |
- Schmitt-trigger pulse filter
+ asymmetric RC pulse filter
     |
  automotive smart high-side switch
 
@@ -56,11 +52,9 @@ eliminates relay-coil power, audible clicking, and contact wear.
 
 | Ref | Candidate value/part | Purpose |
 |---|---|---|
-| F1 | 100 mA inline fuse or fusible lead | Protect sense lead |
-| D1 | SMAJ33A automotive-qualified equivalent | Positive transient clamp |
-| D2 | 1N4148W, anti-parallel with optocoupler LED | Reverse-voltage protection |
+| D3 | 1N4148WS, anti-parallel with optocoupler LED | Reverse-voltage protection |
 | R1, R2 | 1.0 kΩ, 0.25 W each, series | Set LED current and share dissipation |
-| U1 | LTV-817S, PC817-class optocoupler, or automotive-qualified equivalent | Isolated detection |
+| U2 | VO617A-4X017T | Isolated detection with specified high CTR |
 
 If the suspected PWM waveform rises to 14.8 V, two 1.0 kΩ resistors produce
 approximately:
@@ -82,21 +76,20 @@ diagnostic-pulse rejection are performed on the isolated, low-voltage side.
 
 | Ref | Candidate value/part | Purpose |
 |---|---|---|
-| U2 | Protected 5 V automotive regulator, LM2931-5.0 class | Logic supply |
-| U3 | SN74HC14-Q1 Schmitt-trigger inverter | Clean switching threshold |
-| R3 | 10 kΩ provisional | U1 collector path; lets successive PWM pulses discharge C1 |
-| R4 | 100 kΩ provisional | Slowly restores the filtered node when pulses stop |
-| C1 | 10 µF provisional, low-leakage | Integrates PWM and rejects isolated pulses |
-| U4 | TPS1H200A-Q1 | Protected 40 V automotive high-side lamp switch |
-| R5 | Per U4 data-sheet stand-alone application | U4 current-limit programming |
-| R6 | 100 kΩ | Defined U4 input-off state |
-| C2 | Per U4 data-sheet application | Fault-delay/behavior configuration |
+| Q1 | SBC807-40LT1G | PNP level shifter driven by the optocoupler |
+| R3 | 10 kΩ | Limits optocoupler/base current |
+| R4 | 100 kΩ | Holds Q1 off without a sense signal |
+| R5 | 10 kΩ | Charges the filtered control node |
+| R6 | 100 kΩ | Discharges the filtered node after pulses stop |
+| C1 | 10 µF | Accumulates parking-lamp PWM pulses |
+| D4 | BZT52-C5V1-QX | Clamps the switch input near 5.1 V |
+| U1 | BSP762TXUMA1 | Protected automotive high-side lamp switch in SO-8 |
 
-The optocoupler transistor discharges the filtered node through R3 when the
-parking-lamp PWM is active. R4 charges the node to 5 V after valid pulses stop.
-A Schmitt inverter converts the slow RC edge into a clean control signal for
-U4. R3 is intentionally much smaller than R4 so repeated PWM pulses accumulate
-quickly while isolated pulses have limited effect.
+The optocoupler turns on Q1 during each parking-lamp pulse. Q1 charges C1
+through R5; R6 discharges it when pulses stop. D4 limits the resulting control
+voltage for U1. The nominal charge time constant is 0.10 seconds and the
+nominal discharge time constant is 1.0 second, providing persistence through
+normal lamp PWM without placing a capacitor on the BCM output.
 
 The timing values are provisional. Real switching behavior depends on PWM
 frequency and duty cycle, U3 thresholds, optocoupler current-transfer ratio,
@@ -104,17 +97,16 @@ temperature, and capacitor tolerance. Select R3, R4, and C1 after a scope
 capture or by conservative pulse-generator bench testing. Tie unused
 Schmitt-trigger inputs to a defined logic level.
 
-The TPS1H200A-Q1 is an AEC-Q100, 40 V, 200 mΩ smart high-side switch with
-short-circuit, overload, and thermal protection. At 0.25 A its nominal
-conduction loss is only:
+The BSP762TXUMA1 is an automotive smart high-side switch in a hand-solderable SO-8
+package with short-circuit, overload, overvoltage, and thermal protection. At
+0.25 A and its typical 70 mΩ on-resistance, nominal conduction loss is:
 
 ```text
-P = I²R = 0.25² × 0.2 = 0.0125 W
+P = I²R = 0.25² × 0.07 = 0.0044 W
 ```
 
-Configure its current limit above normal lamp startup current. A provisional
-target is 0.75–1.0 A, subject to measuring startup inrush and applying the
-device data-sheet equations and tolerances.
+Its protection threshold is fixed internally. The external 2 A branch fuse
+protects the feed wiring and provides a second level of fault protection.
 
 ### Lamp-power path
 
@@ -127,15 +119,16 @@ auxiliary marker lamp negative -- chassis ground
 F2 must be located close to the power source. Use a 2 A automotive branch fuse
 with 18 AWG automotive primary wire from the fuse-box tap to the controller.
 The 2 A fuse provides ample margin over the measured 0.25 A operating current,
-while U4 provides the tighter downstream overload and short-circuit
+while U1 provides downstream overload and short-circuit
 protection:
 
 ```text
 1.25 × 0.25 A = 0.3125 A
 ```
 
-The fuse must protect every conductor between the fuse-box tap and U4. The
-smaller grille pigtail is protected by U4's programmed current limit. A 5 A
+The fuse must protect every conductor between the fuse-box tap and U1. The
+smaller grille pigtail also benefits from U1's fixed internal current limiting.
+A 5 A
 upstream fuse is also compatible with 18 AWG feed wiring, but 2 A provides
 better protection and adequate operating margin for this load.
 

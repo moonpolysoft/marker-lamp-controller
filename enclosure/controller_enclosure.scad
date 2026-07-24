@@ -20,10 +20,10 @@ screw_diameter = 3.2;
 screw_boss_diameter = 8;
 screw_edge_offset = 8;
 
-pcb_length = 72;
-pcb_width = 48;
-pcb_hole_spacing_x = 64;
-pcb_hole_spacing_y = 40;
+pcb_length = 80;
+pcb_width = 45;
+pcb_hole_spacing_x = 72;
+pcb_hole_spacing_y = 37;
 pcb_standoff_height = 5;
 pcb_screw_diameter = 2.7;
 
