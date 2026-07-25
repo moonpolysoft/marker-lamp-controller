@@ -1,5 +1,6 @@
 Reference,Quantity,Value,Manufacturer,Manufacturer Part Number,Package,Notes
-J1,1,4-position pluggable header,Same Sky,TBP01R1-508-04BE,THT 5.08 mm,"DigiKey 102-6408-ND; mating plug TBP01P1-508-04BE / 102-6392-ND"
+J1,1,4-position pluggable board header,Same Sky,TBP01R1-508-04BE,THT 5.08 mm,"DigiKey 102-6408-ND"
+J1M,1,4-position wire-side pluggable terminal block,Same Sky,TBP01P1-508-04BE,5.08 mm plug,"DigiKey 102-6392-ND; screw-clamp wire termination; no separate contacts required"
 U1,1,Smart high-side switch,Infineon,BSP762TXUMA1,PG-DSO-8,"DigiKey BSP762TXUMA1CT-ND; AEC qualified; active"
 U2,1,Optocoupler,Vishay,VO617A-4X017T,DIP-4 SMD,"CTR rank 4; gull-wing leads"
 Q1,1,PNP transistor,onsemi,SBC807-40LT1G,SOT-23,"DigiKey SBC807-40LT1GOSCT-ND; AEC-Q101"
