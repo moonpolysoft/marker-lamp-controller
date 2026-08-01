@@ -1,12 +1,15 @@
 # Controller Enclosure Concept
 
-`controller_enclosure.scad` is a preliminary parametric enclosure consisting
-of a base and lid. It is intentionally larger than the expected circuit so
-terminal blocks, an automotive relay, and strain relief can be evaluated.
+`controller_enclosure.scad` is a parametric prototype enclosure consisting of
+a base and lid sized for the Revision A controller PCB.
 
-Default external dimensions are approximately 100 × 72 × 38 mm, excluding
-mounting tabs. This is deliberately generous; the switch to a solid-state
-power stage should permit a substantially smaller final enclosure.
+Default external dimensions are approximately 96 × 68 × 36 mm, excluding
+mounting tabs.
+
+The left wall has a support-free, top-open notch sized to admit the Same Sky
+`TBP01P1-508-04BE` four-position mating plug from outside. The lid lip is
+relieved over the same opening. The nominal 22.5 mm opening width provides
+approximately 2.2 mm total clearance around the plug's 20.32 mm length.
 
 ## Generate models
 
@@ -37,16 +40,25 @@ openscad -D 'part="lid"' -o controller_lid.stl controller_enclosure.scad
 - Infill: 30% or greater around mounting tabs
 - Print both pieces with their large flat exterior faces on the build plate.
 
+## Hardware assumptions
+
+- Lid: four M3 machine screws into heat-set inserts.
+- Insert pocket: 4.2 mm diameter × 5.5 mm deep; adjust these two parameters to
+  the actual insert manufacturer's recommended hole dimensions.
+- PCB: four M3 screws driven into 2.7 mm pilot holes in printed standoffs.
+- PCB mounting pattern: 72 × 37 mm.
+- No environmental gasket is required for the dry installation location; the
+  existing shallow channel may be left unused.
+
 The current lid uses screws, not printed snap fits. The model includes an
 O-ring/gasket channel concept, but sealing has not been validated. Use sealed
 cable glands or sealed bulkhead connectors for an exterior/underbody mounting
 location.
 
-## Measurements required before finalization
+## Checks before vehicle installation
 
-- Finished PCB length, width, and component height
-- Final PCB dimensions and tallest component
-- Connector or cable-gland diameters
-- Cable exit direction
-- Available mounting footprint and bolt spacing
-- Required ingress protection
+- Confirm the selected heat-set insert diameter and length before printing.
+- Verify that the populated PCB, Q1 rework, C3, header, and mating plug clear
+  the lid and screw bosses.
+- Verify that the connector can be inserted and removed with the lid fitted.
+- Confirm the enclosure mounting-tab hole locations against the vehicle.

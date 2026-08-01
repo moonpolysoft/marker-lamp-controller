@@ -16,8 +16,10 @@ lid_thickness = 3;
 corner_radius = 5;
 lid_clearance = 0.30;
 
-screw_diameter = 3.2;
-screw_boss_diameter = 8;
+lid_screw_clearance_diameter = 3.6;
+lid_insert_hole_diameter = 4.2;
+lid_insert_depth = 5.5;
+screw_boss_diameter = 9;
 screw_edge_offset = 8;
 
 pcb_length = 80;
@@ -27,8 +29,12 @@ pcb_hole_spacing_y = 37;
 pcb_standoff_height = 5;
 pcb_screw_diameter = 2.7;
 
-cable_hole_diameter = 12.5;
-cable_hole_spacing = 22;
+// Opening for the 4-position TBP01P1-508 mating plug.  The plug is
+// 20.32 mm long and approximately 15 x 18 mm in cross-section.  A top-open
+// notch avoids an unsupported bridge and permits insertion from outside.
+j1_opening_center_y = 28.1;
+j1_opening_width = 22.5;
+j1_opening_bottom = 5.5;
 
 mount_tab_length = 14;
 mount_tab_width = 16;
@@ -71,9 +77,12 @@ module enclosure_screw_boss(x, y) {
     translate([x, y, floor_thickness - 0.1])
         difference() {
             cylinder(d = screw_boss_diameter, h = inside_height + 0.1);
-            translate([0, 0, -0.1])
-                cylinder(d = screw_diameter,
-                         h = inside_height + 0.4);
+            // Blind pocket entered from the top for a common M3 heat-set
+            // insert.  Tune diameter/depth to the inserts actually used.
+            translate([0, 0,
+                       inside_height - lid_insert_depth])
+                cylinder(d = lid_insert_hole_diameter,
+                         h = lid_insert_depth + 0.3);
         }
 }
 
@@ -120,14 +129,14 @@ module base() {
                     pcb_standoff(x, y);
         }
 
-        // Three provisional cable-gland holes on one short wall.
-        for (y = [outer_width / 2 - cable_hole_spacing,
-                  outer_width / 2,
-                  outer_width / 2 + cable_hole_spacing])
-            translate([-0.1, y, floor_thickness + inside_height / 2])
-                rotate([0, 90, 0])
-                    cylinder(d = cable_hole_diameter,
-                             h = wall + 0.2);
+        // Direct-access notch for inserting the wire-side J1 plug through
+        // the left wall.  It remains open at the top for support-free print.
+        translate([-0.1,
+                   j1_opening_center_y - j1_opening_width / 2,
+                   j1_opening_bottom])
+            cube([wall + 0.2,
+                  j1_opening_width,
+                  base_height - j1_opening_bottom + 0.2]);
     }
 }
 
@@ -168,8 +177,16 @@ module lid() {
             for (y = [screw_edge_offset,
                       outer_width - screw_edge_offset])
                 translate([x, y, -0.1])
-                    cylinder(d = screw_diameter + 0.4,
+                    cylinder(d = lid_screw_clearance_diameter,
                              h = lid_thickness + lip_height + 0.2);
+
+        // Remove the lid lip above J1 while retaining the solid lid roof.
+        translate([-0.1,
+                   j1_opening_center_y - j1_opening_width / 2,
+                   lid_thickness - 0.15])
+            cube([wall + lid_clearance + lip_wall + 0.3,
+                  j1_opening_width,
+                  lip_height + 0.4]);
 
         // Shallow gasket channel on the underside.
         translate([wall / 2, wall / 2, lid_thickness - gasket_depth])
