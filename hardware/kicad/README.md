@@ -8,6 +8,8 @@ This directory contains Revision A of the two-layer marker-lamp controller.
 - `generate_pcb.py` — deterministic PCB generator using KiCad's `pcbnew`
   Python module.
 - `circuit-netlist.md` — readable authoritative circuit connectivity.
+- `revision-b-notes.md` — corrections found while assembling Revision A that
+  must be incorporated before the next board order.
 - `BOM.csv` — orderable manufacturer and DigiKey part numbers.
 - `drc-report.txt` — KiCad board DRC result.
 - `fabrication/` — OSH Park Gerbers and separate plated/non-plated drills.
