@@ -3,7 +3,7 @@
 `controller_enclosure.scad` is a parametric prototype enclosure consisting of
 a base and lid sized for the Revision A controller PCB.
 
-Default external dimensions are approximately 96 × 80 × 36 mm, excluding
+Default external dimensions are approximately 96 × 80 × 22 mm, excluding
 mounting tabs.
 
 The left wall has a support-free, top-open notch sized to admit the Same Sky
@@ -20,6 +20,9 @@ nominal clearance from the inside edge of the lid lip.
 The base notch and lid relief deliberately use mirrored source coordinates:
 the lid is printed exterior-face down and flipped for assembly. This makes the
 two openings align when the enclosure is closed.
+
+The base is 19 mm tall, including its 3 mm floor. The solid wall beneath the
+J1 notch is 9.5 mm tall.
 
 ## Generate models
 

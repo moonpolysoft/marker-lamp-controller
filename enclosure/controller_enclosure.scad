@@ -9,7 +9,7 @@ part = "assembly"; // "base", "lid", or "assembly"
 
 inside_length = 90;
 inside_width = 74;
-inside_height = 30;
+inside_height = 16;
 wall = 3;
 floor_thickness = 3;
 lid_thickness = 3;
@@ -35,7 +35,7 @@ pcb_shift_x = -4.5;
 // notch avoids an unsupported bridge and permits insertion from outside.
 j1_center_from_pcb_edge = 16.62;
 j1_opening_width = 22.5;
-j1_opening_bottom = 5.5;
+j1_opening_bottom = 9.5;
 
 mount_tab_length = 14;
 mount_tab_width = 16;
