@@ -60,6 +60,8 @@ openscad -D 'part="lid"' -o controller_lid.stl controller_enclosure.scad
   the actual insert manufacturer's recommended hole dimensions.
 - PCB: four M3 screws driven into 2.7 mm pilot holes in printed standoffs.
 - PCB mounting pattern: 72 × 37 mm.
+- The two PCB standoffs opposite J1 include a 0.5 mm outward print-fit
+  adjustment, producing 72.5 mm modeled spacing in that axis.
 - No environmental gasket is required for the dry installation location; the
   existing shallow channel may be left unused.
 

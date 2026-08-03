@@ -29,6 +29,7 @@ pcb_hole_spacing_y = 37;
 pcb_standoff_height = 5;
 pcb_screw_diameter = 2.7;
 pcb_shift_x = -4.5;
+pcb_far_standoff_adjust_x = 0.5;
 
 // Opening for the 4-position TBP01P1-508 mating plug.  The plug is
 // 20.32 mm long and approximately 15 x 18 mm in cross-section.  A top-open
@@ -131,7 +132,7 @@ module base() {
             for (x = [(outer_length - pcb_hole_spacing_x) / 2
                       + pcb_shift_x,
                       (outer_length + pcb_hole_spacing_x) / 2
-                      + pcb_shift_x])
+                      + pcb_shift_x + pcb_far_standoff_adjust_x])
                 for (y = [(outer_width - pcb_hole_spacing_y) / 2,
                           (outer_width + pcb_hole_spacing_y) / 2])
                     pcb_standoff(x, y);
