@@ -8,7 +8,7 @@
 part = "assembly"; // "base", "lid", or "assembly"
 
 inside_length = 90;
-inside_width = 62;
+inside_width = 74;
 inside_height = 30;
 wall = 3;
 floor_thickness = 3;
@@ -20,7 +20,7 @@ lid_screw_clearance_diameter = 3.6;
 lid_insert_hole_diameter = 4.2;
 lid_insert_depth = 5.5;
 screw_boss_diameter = 9;
-screw_edge_offset = 8;
+screw_edge_offset = 11;
 
 pcb_length = 80;
 pcb_width = 45;
@@ -28,11 +28,12 @@ pcb_hole_spacing_x = 72;
 pcb_hole_spacing_y = 37;
 pcb_standoff_height = 5;
 pcb_screw_diameter = 2.7;
+pcb_shift_x = -4.5;
 
 // Opening for the 4-position TBP01P1-508 mating plug.  The plug is
 // 20.32 mm long and approximately 15 x 18 mm in cross-section.  A top-open
 // notch avoids an unsupported bridge and permits insertion from outside.
-j1_opening_center_y = 28.1;
+j1_center_from_pcb_edge = 16.62;
 j1_opening_width = 22.5;
 j1_opening_bottom = 5.5;
 
@@ -46,6 +47,11 @@ gasket_depth = 1.0;
 outer_length = inside_length + 2 * wall;
 outer_width = inside_width + 2 * wall;
 base_height = inside_height + floor_thickness;
+pcb_edge_y = (outer_width - pcb_width) / 2;
+j1_lid_relief_center_y = pcb_edge_y + j1_center_from_pcb_edge;
+// The lid is printed exterior-face down and flipped about Y for assembly.
+// Its printable relief therefore remains mirrored relative to the base notch.
+j1_base_opening_center_y = outer_width - j1_lid_relief_center_y;
 
 $fn = 48;
 
@@ -122,8 +128,10 @@ module base() {
                           outer_width - screw_edge_offset])
                     enclosure_screw_boss(x, y);
 
-            for (x = [(outer_length - pcb_hole_spacing_x) / 2,
-                      (outer_length + pcb_hole_spacing_x) / 2])
+            for (x = [(outer_length - pcb_hole_spacing_x) / 2
+                      + pcb_shift_x,
+                      (outer_length + pcb_hole_spacing_x) / 2
+                      + pcb_shift_x])
                 for (y = [(outer_width - pcb_hole_spacing_y) / 2,
                           (outer_width + pcb_hole_spacing_y) / 2])
                     pcb_standoff(x, y);
@@ -132,7 +140,7 @@ module base() {
         // Direct-access notch for inserting the wire-side J1 plug through
         // the left wall.  It remains open at the top for support-free print.
         translate([-0.1,
-                   j1_opening_center_y - j1_opening_width / 2,
+                   j1_base_opening_center_y - j1_opening_width / 2,
                    j1_opening_bottom])
             cube([wall + 0.2,
                   j1_opening_width,
@@ -182,7 +190,7 @@ module lid() {
 
         // Remove the lid lip above J1 while retaining the solid lid roof.
         translate([-0.1,
-                   j1_opening_center_y - j1_opening_width / 2,
+                   j1_lid_relief_center_y - j1_opening_width / 2,
                    lid_thickness - 0.15])
             cube([wall + lid_clearance + lip_wall + 0.3,
                   j1_opening_width,
