@@ -52,6 +52,8 @@ openscad -D 'part="lid"' -o controller_lid.stl controller_enclosure.scad
 - Top/bottom layers: at least 5
 - Infill: 30% or greater around mounting tabs
 - Print both pieces with their large flat exterior faces on the build plate.
+- Lid: use a 5 mm brim to prevent the edges from peeling up from the print
+  bed.
 
 ## Hardware assumptions
 
