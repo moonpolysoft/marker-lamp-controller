@@ -1,10 +1,12 @@
 # Fabrication Design
 
-This directory contains Revision A of the two-layer marker-lamp controller.
+This directory contains Revision A and Revision B of the two-layer
+marker-lamp controller. Revision B is the current fabrication design.
 
 ## Files
 
 - `marker-lamp-controller.kicad_pcb` — generated KiCad 10 PCB.
+- `marker-lamp-controller-rev-b.kicad_pcb` — corrected Revision B PCB.
 - `generate_pcb.py` — deterministic PCB generator using KiCad's `pcbnew`
   Python module.
 - `circuit-netlist.md` — readable authoritative circuit connectivity.
@@ -13,10 +15,12 @@ This directory contains Revision A of the two-layer marker-lamp controller.
 - `BOM.csv` — orderable manufacturer and DigiKey part numbers.
 - `drc-report.txt` — KiCad board DRC result.
 - `fabrication/` — OSH Park Gerbers and separate plated/non-plated drills.
+- `fabrication-rev-b/` — Revision B OSH Park Gerbers, drills, and upload ZIP.
 - `board-render.png` — top-side board preview (custom hand-solder footprints
   do not carry 3D body models).
+- `board-render-rev-b.png` — Revision B top-side board preview.
 
-The PCB generator and `circuit-netlist.md` are authoritative for Revision A.
+The PCB generator and `circuit-netlist.md` are authoritative for Revision B.
 
 ## Connector
 
@@ -80,10 +84,10 @@ Run from this directory or from the project root using the full relative path.
 
 ## Status
 
-Revision A is an engineering prototype. Bench test the sense waveform,
+Revision B remains an engineering prototype. Bench test the sense waveform,
 turn-on/off delays, reverse polarity, output short protection, thermal
 behavior, and vehicle sleep current before permanent installation.
 
 KiCad 10 DRC reports zero violations, zero unconnected pads, and zero footprint
-errors. This verifies the artwork rules and connectivity, not the behavior of
-the untested vehicle signal.
+errors for Revision B. This verifies the artwork rules and connectivity, not
+vehicle behavior.

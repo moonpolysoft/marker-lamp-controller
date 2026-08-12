@@ -11,7 +11,7 @@ import pcbnew
 
 
 OUT_DIR = Path(__file__).resolve().parent
-BOARD_PATH = OUT_DIR / "marker-lamp-controller.kicad_pcb"
+BOARD_PATH = OUT_DIR / "marker-lamp-controller-rev-b.kicad_pcb"
 
 MM = pcbnew.FromMM
 
@@ -180,8 +180,10 @@ def add_sot23(board, ref, value, x, y, nets):
     fp.SetValue(value)
     fp.SetPosition(point(0, 0))
     fp.SetAttributes(pcbnew.FP_SMD)
-    add_pad(fp, 1, x - 1.7, y + 0.95, 1.8, 1.1, nets[1])
-    add_pad(fp, 2, x - 1.7, y - 0.95, 1.8, 1.1, nets[2])
+    # With the single lead at right: pin 1/base is upper-left and
+    # pin 2/emitter is lower-left.  Revision A accidentally swapped these.
+    add_pad(fp, 1, x - 1.7, y - 0.95, 1.8, 1.1, nets[1])
+    add_pad(fp, 2, x - 1.7, y + 0.95, 1.8, 1.1, nets[2])
     add_pad(fp, 3, x + 1.7, y, 1.8, 1.1, nets[3])
     body = pcbnew.PCB_SHAPE(fp)
     body.SetShape(pcbnew.SHAPE_T_RECT)
@@ -196,14 +198,14 @@ def add_sot23(board, ref, value, x, y, nets):
     return fp
 
 
-def add_connector(board, nets):
+def add_connector(board, nets, y_offset=0):
     fp = pcbnew.FOOTPRINT(board)
     fp.SetReference("J1")
     fp.SetValue("TBP01R1-508-04BE")
     fp.SetPosition(point(0, 0))
     labels = ["SENSE", "BATT+", "LAMP+", "GND"]
     for idx, (net, label) in enumerate(zip(nets, labels), start=1):
-        y = 10 + (idx - 1) * 5.08
+        y = 10 + y_offset + (idx - 1) * 5.08
         shape = pcbnew.PAD_SHAPE_RECT if idx == 1 else pcbnew.PAD_SHAPE_CIRCLE
         add_pad(
             fp,
@@ -220,12 +222,12 @@ def add_connector(board, nets):
         add_text(fp, label, 10.0, y, pcbnew.F_Fab, 0.8)
     outline = pcbnew.PCB_SHAPE(fp)
     outline.SetShape(pcbnew.SHAPE_T_RECT)
-    outline.SetStart(point(3.5, 7.2))
-    outline.SetEnd(point(12.5, 28.1))
+    outline.SetStart(point(3.5, 7.2 + y_offset))
+    outline.SetEnd(point(12.5, 28.1 + y_offset))
     outline.SetLayer(pcbnew.F_Fab)
     outline.SetWidth(MM(0.2))
     fp.Add(outline)
-    add_text(fp, "J1", 7, 5.8, pcbnew.F_Fab, 1.0)
+    add_text(fp, "J1", 7, 5.8 + y_offset, pcbnew.F_Fab, 1.0)
     board.Add(fp)
     return fp
 
@@ -323,6 +325,7 @@ def build_board():
     add_connector(
         board,
         [nets["SENSE"], nets["VPRE"], nets["LAMP_OUT"], nets["GND"]],
+        y_offset=7,
     )
 
     add_smd_2(board, "R1", "1k", 17, 10, nets["SENSE"], nets["SENSE_R1"])
@@ -399,15 +402,16 @@ def build_board():
         board,
         "C3",
         "47u 50V",
-        41,
+        43,
         24,
         nets["GND"],
         nets["VPWR"],
-        spacing=5.0,
-        pad_x=2.2,
-        pad_y=2.8,
-        body_x=4.0,
-        body_y=5.5,
+        spacing=6.1,
+        pad_x=4.0,
+        pad_y=2.5,
+        body_x=8.3,
+        body_y=8.3,
+        pin1_right=True,
     )
 
     add_smd_2(board, "R3", "10k", 41, 10, nets["OPTO_C"], nets["QBASE"])
@@ -469,13 +473,13 @@ def build_board():
     )
 
     # Local signal chain on the front layer.
-    add_track(board, nets["SENSE"], [(7, 10), (15.4, 10)])
+    add_track(board, nets["SENSE"], [(7, 17), (10, 17), (10, 10), (15.4, 10)])
     add_track(board, nets["SENSE_R1"], [(18.6, 10), (21.4, 10)])
     add_track(board, nets["OPTO_A"], [(24.6, 10), (27.5, 10)])
     add_track(board, nets["OPTO_A"], [(24.6, 10), (25.2, 10), (25.2, 14), (24.9, 14)])
     add_track(board, nets["OPTO_C"], [(36.5, 10), (39.4, 10)])
-    add_track(board, nets["QBASE"], [(42.6, 10), (45, 10), (45, 12.5), (49.3, 12.5), (49.3, 10.95)])
-    add_track(board, nets["QBASE"], [(45, 12.5), (44.4, 14)])
+    add_track(board, nets["QBASE"], [(42.6, 10), (45, 10), (49.3, 10), (49.3, 9.05)])
+    add_track(board, nets["QBASE"], [(45, 10), (45, 14), (44.4, 14)])
     add_track(board, nets["QCOL"], [(52.7, 10), (54.4, 14)])
     add_track(board, nets["CTRL"], [(57.6, 14), (60.4, 14), (60.4, 18), (60.4, 18)])
     add_track(board, nets["CTRL"], [(60.4, 18), (60.1, 23)])
@@ -483,11 +487,11 @@ def build_board():
     add_track(board, nets["CTRL"], [(60.4, 18), (59, 18), (59, 19.365), (66, 19.365)])
 
     # B.Cu buses keep power, output, and ground separated.
-    add_track(board, nets["LAMP_OUT"], [(7, 20.16), (12, 20.16), (12, 28), (68, 28)], 1.2, pcbnew.B_Cu)
+    add_track(board, nets["LAMP_OUT"], [(7, 27.16), (12, 27.16), (12, 28), (68, 28)], 1.2, pcbnew.B_Cu)
     add_track(board, nets["VPWR"], [(20, 31), (73, 31)], 1.2, pcbnew.B_Cu)
 
     # Raw input and series reverse-polarity diode.
-    add_track(board, nets["VPRE"], [(7, 15.08), (12, 15.08), (12, 18), (14.25, 18)], 1.2)
+    add_track(board, nets["VPRE"], [(7, 22.08), (12, 22.08), (12, 18), (14.25, 18)], 1.2)
     add_track(board, nets["VPWR"], [(19.75, 18), (20, 18), (20, 31)], 1.2)
     add_via(board, nets["VPWR"], 20, 31)
 
@@ -496,9 +500,9 @@ def build_board():
     add_via(board, nets["VPWR"], 30.1, 31)
     add_track(board, nets["VPWR"], [(35.6, 24), (35.6, 31)], 0.8)
     add_via(board, nets["VPWR"], 35.6, 31)
-    add_track(board, nets["VPWR"], [(43.5, 24), (43.5, 31)], 0.8)
-    add_via(board, nets["VPWR"], 43.5, 31)
-    add_track(board, nets["VPWR"], [(47.6, 14), (47.6, 16), (51.2, 16), (51.2, 7.5), (49.3, 7.5), (49.3, 9.05)], 0.6)
+    add_track(board, nets["VPWR"], [(46.05, 24), (46.05, 31)], 0.8)
+    add_via(board, nets["VPWR"], 46.05, 31)
+    add_track(board, nets["VPWR"], [(47.6, 14), (47.6, 16), (51.2, 16), (51.2, 12.5), (49.3, 12.5), (49.3, 10.95)], 0.6)
     add_track(board, nets["VPWR"], [(47.6, 14), (47.6, 31)], 0.6)
     add_via(board, nets["VPWR"], 47.6, 31)
     for py in [18.095, 19.365, 20.635, 21.905]:
@@ -512,7 +516,7 @@ def build_board():
         ((36.5, 12.54), (36.5, 14.5)),
         ((23.9, 24), (23.9, 26)),
         ((32.4, 24), (32.4, 26)),
-        ((38.5, 24), (38.5, 26.5)),
+        ((39.95, 24), (39.95, 26.5)),
         ((63.6, 18), (63.6, 16.5)),
         ((63.9, 23), (65.5, 23)),
         ((54.1, 18), (54.1, 20)),
@@ -532,8 +536,9 @@ def build_board():
     # Labels and polarity notes.
     board_texts = [
         ("F-150 LIGHTNING", 40, 3.5, 1.2),
-        ("MARKER LAMP CTRL REV A", 40, 43.0, 1.0),
+        ("MARKER LAMP CTRL REV B", 40, 43.0, 1.0),
         ("J1: 1 SENSE  2 BATT+  3 LAMP+  4 GND", 40, 39.5, 0.8),
+        ("C3 +", 49, 27, 0.8),
     ]
     for text, x, y, size in board_texts:
         item = pcbnew.PCB_TEXT(board)

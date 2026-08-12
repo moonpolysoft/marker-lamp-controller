@@ -1,0 +1,39 @@
+%TF.GenerationSoftware,KiCad,Pcbnew,10.0.5-10.0.5~ubuntu26.04.1*%
+%TF.CreationDate,2026-08-12T13:49:54-07:00*%
+%TF.ProjectId,marker-lamp-controller-rev-b,6d61726b-6572-42d6-9c61-6d702d636f6e,rev?*%
+%TF.SameCoordinates,Original*%
+%TF.FileFunction,Soldermask,Bot*%
+%TF.FilePolarity,Negative*%
+%FSLAX46Y46*%
+G04 Gerber Fmt 4.6, Leading zero omitted, Abs format (unit mm)*
+G04 Created by KiCad (PCBNEW 10.0.5-10.0.5~ubuntu26.04.1) date 2026-08-12 13:49:54*
+%MOMM*%
+%LPD*%
+G01*
+G04 APERTURE LIST*
+%ADD10R,3.200000X3.200000*%
+%ADD11C,3.200000*%
+%ADD12C,6.000000*%
+G04 APERTURE END LIST*
+D10*
+%TO.C,J1*%
+X7000000Y-17000000D03*
+D11*
+X7000000Y-22080000D03*
+X7000000Y-27160000D03*
+X7000000Y-32240000D03*
+%TD*%
+D12*
+%TO.C,H3*%
+X77000000Y-42000000D03*
+%TD*%
+%TO.C,H4*%
+X5000000Y-42000000D03*
+%TD*%
+%TO.C,H2*%
+X77000000Y-5000000D03*
+%TD*%
+%TO.C,H1*%
+X5000000Y-5000000D03*
+%TD*%
+M02*

@@ -21,6 +21,9 @@ The base notch and lid relief deliberately use mirrored source coordinates:
 the lid is printed exterior-face down and flipped for assembly. This makes the
 two openings align when the enclosure is closed.
 
+Revision B moves J1 by 7 mm along the PCB edge to clear its mounting hole.
+The enclosure opening center follows the new connector position.
+
 The base is 19 mm tall, including its 3 mm floor. The solid wall beneath the
 J1 notch is 9.5 mm tall.
 

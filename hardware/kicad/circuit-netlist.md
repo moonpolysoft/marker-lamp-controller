@@ -1,4 +1,4 @@
-# Revision A Circuit Connectivity
+# Revision B Circuit Connectivity
 
 This is the authoritative human-readable netlist for the PCB. Pin numbers
 refer to component package pins, not schematic-symbol ordering.
@@ -24,6 +24,8 @@ refer to component package pins, not schematic-symbol ordering.
 - U2 `VO617A-4X017T`: 1 LED anode, 2 LED cathode, 3 transistor emitter,
   4 transistor collector.
 - Q1 `SBC807-40LT1G`: 1 base, 2 emitter, 3 collector.
+- C3 `EEE-FK1H470P`: pin 1/right pad is positive (`VPWR`); pin 2/left
+  pad is negative (`GND`).
 - D1 is the series reverse-polarity diode.
 - D2 is the supply TVS.
 - D3 is antiparallel to the optocoupler LED.

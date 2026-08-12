@@ -34,7 +34,7 @@ pcb_far_standoff_adjust_x = 0.5;
 // Opening for the 4-position TBP01P1-508 mating plug.  The plug is
 // 20.32 mm long and approximately 15 x 18 mm in cross-section.  A top-open
 // notch avoids an unsupported bridge and permits insertion from outside.
-j1_center_from_pcb_edge = 16.62;
+j1_center_from_pcb_edge = 23.62;
 j1_opening_width = 22.5;
 j1_opening_bottom = 9.5;
 
