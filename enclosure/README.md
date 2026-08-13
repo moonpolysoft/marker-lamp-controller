@@ -1,10 +1,12 @@
 # Controller Enclosure Concept
 
-`controller_enclosure.scad` is a parametric prototype enclosure consisting of
-a base and lid sized for the Revision A controller PCB.
+`controller_enclosure.scad` is a parametric enclosure consisting of a base and
+lid sized for the current Revision B controller PCB. Its fit has been confirmed
+with a printed prototype.
 
-Default external dimensions are approximately 96 × 80 × 22 mm, excluding
-mounting tabs.
+Default external dimensions are approximately 96 × 80 × 23.2 mm, excluding
+mounting tabs. The lid roof is 4.2 mm thick so recessed screw heads retain a
+1.2 mm supporting floor.
 
 The left wall has a support-free, top-open notch sized to admit the Same Sky
 `TBP01P1-508-04BE` four-position mating plug from outside. The lid lip is
@@ -61,8 +63,13 @@ openscad -D 'part="lid"' -o controller_lid.stl controller_enclosure.scad
 ## Hardware assumptions
 
 - Lid: four M3 machine screws into heat-set inserts.
+- Lid screw recesses: 5.8 mm diameter × 3.0 mm deep, sized for nominal
+  5.5 mm-diameter, 3.0 mm-tall heads. Verify the actual screw heads before
+  the final print.
 - Insert pocket: 4.2 mm diameter × 5.5 mm deep; adjust these two parameters to
   the actual insert manufacturer's recommended hole dimensions.
+- Lid insert bosses finish 0.75 mm below the base rim to keep heat-set-insert
+  squeeze-out from interfering with lid fit.
 - PCB: four M3 screws driven into 2.7 mm pilot holes in printed standoffs.
 - PCB mounting pattern: 72 × 37 mm.
 - The two PCB standoffs opposite J1 include a 0.5 mm outward print-fit
@@ -78,6 +85,8 @@ location.
 ## Checks before vehicle installation
 
 - Confirm the selected heat-set insert diameter and length before printing.
+- Confirm that the installed lid screws remain long enough for full insert
+  engagement with the recessed 4.2 mm lid roof.
 - Verify that the populated PCB, Q1 rework, C3, header, and mating plug clear
   the lid and screw bosses.
 - Verify that the connector can be inserted and removed with the lid fitted.

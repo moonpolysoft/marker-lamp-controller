@@ -12,15 +12,22 @@ inside_width = 74;
 inside_height = 16;
 wall = 3;
 floor_thickness = 3;
-lid_thickness = 3;
+// A 4.2 mm roof leaves 1.2 mm of material beneath the 3 mm-deep lid-screw
+// counterbores.  The previous 3 mm roof was too thin to recess the heads.
+lid_thickness = 4.2;
 corner_radius = 5;
 lid_clearance = 0.30;
 
 lid_screw_clearance_diameter = 3.6;
+lid_screw_head_diameter = 5.8;
+lid_screw_head_recess_depth = 3.0;
 lid_insert_hole_diameter = 4.2;
 lid_insert_depth = 5.5;
 screw_boss_diameter = 9;
 screw_edge_offset = 11;
+// Keep heat-set-insert flare/squeeze-out below the base rim so it cannot
+// interfere with the underside of the lid.
+screw_boss_top_setback = 0.75;
 
 pcb_length = 80;
 pcb_width = 45;
@@ -83,11 +90,13 @@ module mounting_tab(y_center) {
 module enclosure_screw_boss(x, y) {
     translate([x, y, floor_thickness - 0.1])
         difference() {
-            cylinder(d = screw_boss_diameter, h = inside_height + 0.1);
+            cylinder(d = screw_boss_diameter,
+                     h = inside_height + 0.1 - screw_boss_top_setback);
             // Blind pocket entered from the top for a common M3 heat-set
             // insert.  Tune diameter/depth to the inserts actually used.
             translate([0, 0,
-                       inside_height - lid_insert_depth])
+                       inside_height - screw_boss_top_setback
+                       - lid_insert_depth])
                 cylinder(d = lid_insert_hole_diameter,
                          h = lid_insert_depth + 0.3);
         }
@@ -185,9 +194,18 @@ module lid() {
                   outer_length - screw_edge_offset])
             for (y = [screw_edge_offset,
                       outer_width - screw_edge_offset])
-                translate([x, y, -0.1])
-                    cylinder(d = lid_screw_clearance_diameter,
-                             h = lid_thickness + lip_height + 0.2);
+                union() {
+                    // Through clearance for the M3 screw shank.
+                    translate([x, y, -0.1])
+                        cylinder(d = lid_screw_clearance_diameter,
+                                 h = lid_thickness + lip_height + 0.2);
+                    // Flat-bottom recess entered from the exterior face.
+                    // 0.3 mm radial clearance accommodates a nominal
+                    // 5.5 mm-diameter screw head and print tolerance.
+                    translate([x, y, -0.1])
+                        cylinder(d = lid_screw_head_diameter,
+                                 h = lid_screw_head_recess_depth + 0.1);
+                }
 
         // Remove the lid lip above J1 while retaining the solid lid roof.
         translate([-0.1,

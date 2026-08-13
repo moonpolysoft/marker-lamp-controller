@@ -50,9 +50,9 @@ Before releasing Revision B, measure the received component and verify:
 - Hand-soldering access around both terminals
 - Clearance to adjacent components and traces
 
-## Revision B release gate
+## Revision B release record
 
-Print the component-side fabrication drawing at 1:1 scale and physically place
-Q1, C3, J1, the mating plug, and representative M3 mounting hardware on it.
-Do not order Revision B until all three corrections pass this fit check and a
-fresh KiCad DRC reports no violations or unconnected pads.
+Revision B implements all three corrections and passed a fresh KiCad DRC with
+no violations or unconnected pads before submission to OSH Park. The enclosure
+was updated for the relocated J1 and confirmed by prototype printing. The
+fabricated Revision B assembly still requires bench and in-vehicle validation.

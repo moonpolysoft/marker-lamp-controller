@@ -1,6 +1,7 @@
 # Auxiliary Marker-Lamp Controller
 
-Status: Revision A fabrication design.
+Status: Revision B fabrication design submitted to OSH Park; Revision A was
+bench tested and verified in the vehicle.
 
 ## Confirmed measurements
 
@@ -10,7 +11,9 @@ Status: Revision A fabrication design.
   - approximately 8 V with the truck on.
 - Total aftermarket marker-lamp current: 0.25 A while supplied by the truck's
   energized accessory circuit.
-- The input waveform has not yet been observed with an oscilloscope.
+- The input waveform has not yet been characterized with an oscilloscope. The
+  assembled circuit nevertheless responds correctly to the selected signal in
+  the vehicle.
 
 The most likely explanation for the reduced multimeter readings is
 battery-amplitude PWM. The input circuit must therefore accumulate valid PWM
@@ -91,7 +94,7 @@ voltage for U1. The nominal charge time constant is 0.10 seconds and the
 nominal discharge time constant is 1.0 second, providing persistence through
 normal lamp PWM without placing a capacitor on the BCM output.
 
-The timing values are provisional. Real switching behavior depends on PWM
+The timing values remain subject to characterization. Real switching behavior depends on PWM
 frequency and duty cycle, U3 thresholds, optocoupler current-transfer ratio,
 temperature, and capacitor tolerance. Select R3, R4, and C1 after a scope
 capture or by conservative pulse-generator bench testing. Tie unused
@@ -160,11 +163,10 @@ unsealed wire penetrations.
 6. Test at the maximum expected lamp current with the actual harness and fuse.
 7. Confirm the output switches off when the sense conductor is disconnected.
 
-## Open inputs needed to finalize the design
+## Future characterization
 
-- Desired behavior during approach lighting and remote start
 - Actual parking-lamp PWM amplitude, frequency, and duty cycle
 - Measured off-state diagnostic-pulse width and interval, if any
-- Controller mounting location and temperature/water exposure
-- Preferred connector family and wire exit directions
-- Maximum acceptable enclosure dimensions
+- Turn-on and turn-off thresholds across automotive temperature extremes
+- Vehicle sleep-current contribution over an extended parked interval
+- Transient-immunity testing beyond normal bench and in-vehicle operation

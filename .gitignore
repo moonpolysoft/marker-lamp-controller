@@ -1,2 +1,16 @@
 *.kicad_prl
 *.lck
+*.~lock.*#
+*.bak
+*.tmp
+*~
+.DS_Store
+
+# KiCad local state, caches, and automatic backups
+**/.history/
+**/*-backups/
+**/_autosave-*
+
+# Slicer projects contain machine- and profile-specific working state. The
+# portable OpenSCAD source and exported STL files are versioned instead.
+*.3mf
