@@ -86,6 +86,18 @@ python3 generate_pcb.py
 
 Run from this directory or from the project root using the full relative path.
 
+Generate the top-side repository preview from the project root with:
+
+```sh
+kicad-cli pcb render --side top --quality basic --background opaque \
+  --width 1600 --height 900 --zoom 1.15 \
+  -o hardware/kicad/board-render-rev-b.png \
+  hardware/kicad/marker-lamp-controller-rev-b.kicad_pcb
+```
+
+The custom hand-solder footprints do not include 3D component-body models, so
+the render intentionally shows the bare board, pads, and assembly silkscreen.
+
 ## Status
 
 Revision B remains an engineering prototype. Bench test the sense waveform,
