@@ -20,6 +20,10 @@ marker-lamp controller. Revision B is the current fabrication design.
   do not carry 3D body models).
 - `board-render-rev-b.png` — Revision B top-side board preview.
 
+Revision B includes top-side reference designators, diode cathode markings,
+C3 polarity, U1/U2 pin-1 cues, Q1 lead labels, the complete J1 pinout, and the
+project source URL to support hand assembly and design-source identification.
+
 The PCB generator and `circuit-netlist.md` are authoritative for Revision B.
 
 ## Connector

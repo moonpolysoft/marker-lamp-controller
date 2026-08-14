@@ -37,6 +37,30 @@ def add_text(fp, text, x, y, layer, size=1.0, thickness=0.15):
     return item
 
 
+def add_board_text(board, text, x, y, size=0.8, thickness=0.15):
+    """Add readable top-side assembly text at absolute board coordinates."""
+    item = pcbnew.PCB_TEXT(board)
+    item.SetText(text)
+    item.SetPosition(point(x, y))
+    item.SetLayer(pcbnew.F_SilkS)
+    item.SetTextSize(point(size, size))
+    item.SetTextThickness(MM(thickness))
+    board.Add(item)
+    return item
+
+
+def add_silk_circle(board, x, y, diameter=0.7, width=0.18):
+    """Add a top-silkscreen orientation dot."""
+    mark = pcbnew.PCB_SHAPE(board)
+    mark.SetShape(pcbnew.SHAPE_T_CIRCLE)
+    mark.SetCenter(point(x, y))
+    mark.SetEnd(point(x + diameter / 2, y))
+    mark.SetLayer(pcbnew.F_SilkS)
+    mark.SetWidth(MM(width))
+    board.Add(mark)
+    return mark
+
+
 def add_pad(
     fp,
     number,
@@ -533,21 +557,60 @@ def build_board():
 
     add_ground_zone(board, nets["GND"])
 
-    # Labels and polarity notes.
+    # Hide the automatically created references at (0, 0). Explicit reference
+    # designators below are positioned for hand assembly and remain readable.
+    for footprint in board.GetFootprints():
+        footprint.Reference().SetVisible(False)
+
+    # Board identity and connector pinout.
     board_texts = [
         ("F-150 LIGHTNING", 40, 3.5, 1.2),
-        ("MARKER LAMP CTRL REV B", 40, 43.0, 1.0),
+        ("MARKER LAMP CTRL REV B", 40, 42.4, 1.0),
         ("J1: 1 SENSE  2 BATT+  3 LAMP+  4 GND", 40, 39.5, 0.8),
-        ("C3 +", 49, 27, 0.8),
+        ("github.com/moonpolysoft/marker-lamp-controller", 40, 44.6, 0.8),
     ]
     for text, x, y, size in board_texts:
-        item = pcbnew.PCB_TEXT(board)
-        item.SetText(text)
-        item.SetPosition(point(x, y))
-        item.SetLayer(pcbnew.F_SilkS)
-        item.SetTextSize(point(size, size))
-        item.SetTextThickness(MM(0.15))
-        board.Add(item)
+        add_board_text(board, text, x, y, size)
+
+    # Reference designators are kept off the solder lands and grouped close
+    # enough to make manual placement unambiguous.
+    assembly_refs = [
+        ("R1", 17, 7.6),
+        ("R2", 23, 7.6),
+        ("D3", 23, 16.3),
+        ("U2", 32, 7.5),
+        ("D1", 17, 21.2),
+        ("D2", 26.5, 27.3),
+        ("C2", 34, 21.2),
+        ("C3", 43, 29.1),
+        ("R3", 41, 7.6),
+        ("R4", 46, 16.3),
+        ("Q1", 51, 7.2),
+        ("R5", 56, 11.6),
+        ("D4", 54.5, 20.3),
+        ("R6", 62, 15.7),
+        ("C1", 62, 26.1),
+        ("U1", 69, 15.5),
+    ]
+    for ref, x, y in assembly_refs:
+        add_board_text(board, ref, x, y, 0.85)
+
+    # Polarized-part and pin-1 cues. All four diodes have pin 1/cathode on
+    # their right-hand pad in this layout. C3 positive is also on the right.
+    for x, y in [(26.8, 14), (22.0, 18), (31.0, 27.3), (58.5, 20.3)]:
+        add_board_text(board, "K", x, y, 0.8, 0.15)
+    add_board_text(board, "+", 49.2, 24, 1.0, 0.18)
+    add_board_text(board, "1", 26.0, 8.2, 0.8, 0.15)
+    add_silk_circle(board, 27.1, 8.7)
+    add_board_text(board, "1", 64.2, 15.2, 0.8, 0.15)
+    add_board_text(board, "1/B", 48.2, 7.2, 0.8, 0.15)
+    add_board_text(board, "2/E", 50.3, 13.0, 0.8, 0.15)
+    add_board_text(board, "3/C", 54.8, 10.0, 0.8, 0.15)
+
+    # Store the filled copper zone in the deterministic output so command-line
+    # DRC, previews, and fabrication exports see the same connected ground
+    # plane without requiring a GUI refill step.
+    pcbnew.ZONE_FILLER(board).Fill(board.Zones())
 
     pcbnew.SaveBoard(str(BOARD_PATH), board)
 
