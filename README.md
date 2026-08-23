@@ -11,8 +11,9 @@ the CAN bus or trailer-lighting outputs.
 - Revision A was assembled, bench tested, and verified in the vehicle.
 - The selected driver-side rear parking-lamp signal provides the desired lamp
   behavior. No front-lamp or CAN connection is required.
-- Revision B corrects the three assembly issues found on Revision A and has
-  been submitted to OSH Park. Fabricated Revision B hardware is not yet tested.
+- Revision B corrects the three assembly issues found on Revision A. A
+  Revision B board has been assembled, bench tested, installed, and verified
+  working in the vehicle.
 - The current enclosure prototype has been printed and its mechanical fit is
   confirmed, including the revised connector opening, boss clearances, and
   recessed lid screws.
@@ -20,6 +21,17 @@ the CAN bus or trailer-lighting outputs.
 This remains a hobbyist engineering prototype, not a Ford-approved accessory
 or a safety-certified automotive product. Read [Safety](#safety) before
 building or installing it.
+
+## Finished build
+
+![Assembled Revision B controller installed in the printed enclosure](docs/media/finished-circuit.jpg)
+
+The completed controller follows the selected factory parking-lamp signal and
+switches the three aftermarket amber grille lamps as intended.
+
+[![Video preview showing the auxiliary amber grille lamps illuminated](docs/media/lighting-working-preview.jpg)](docs/media/lighting-working.mp4)
+
+[Play or download the installation demonstration (MP4, H.264/AAC)](docs/media/lighting-working.mp4)
 
 ## What it does
 
@@ -48,6 +60,7 @@ consistent with a pulse-width-modulated automotive lamp output.
 | [`hardware/controller-design.md`](hardware/controller-design.md) | Circuit architecture, component rationale, and validation notes |
 | [`enclosure/`](enclosure/) | Parametric OpenSCAD enclosure source and printable STL exports |
 | [`docs/rear-parking-wire-test.md`](docs/rear-parking-wire-test.md) | Procedure used to identify and verify the vehicle signal |
+| [`docs/media/`](docs/media/) | Finished controller photo and in-vehicle demonstration video |
 
 Revision B is the current PCB. Revision A files remain available as design
 history but include known assembly defects; do not order Revision A.

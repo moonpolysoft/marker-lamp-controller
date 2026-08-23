@@ -1,7 +1,7 @@
 # Auxiliary Marker-Lamp Controller
 
-Status: Revision B fabrication design submitted to OSH Park; Revision A was
-bench tested and verified in the vehicle.
+Status: Revision B assembled, bench tested, installed, and verified working in
+the vehicle.
 
 ## Confirmed measurements
 

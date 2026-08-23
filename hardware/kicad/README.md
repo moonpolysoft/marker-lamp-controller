@@ -100,9 +100,12 @@ the render intentionally shows the bare board, pads, and assembly silkscreen.
 
 ## Status
 
-Revision B remains an engineering prototype. Bench test the sense waveform,
-turn-on/off delays, reverse polarity, output short protection, thermal
-behavior, and vehicle sleep current before permanent installation.
+An assembled Revision B board has been bench tested, installed, and verified
+working in the vehicle with the intended 0.25 A marker-lamp load. It remains an
+engineering prototype; independent builders should bench test every assembly
+and characterize turn-on/off behavior, reverse polarity, output short
+protection, thermal behavior, and vehicle sleep current before permanent
+installation.
 
 KiCad 10 DRC reports zero violations, zero unconnected pads, and zero footprint
 errors for Revision B. This verifies the artwork rules and connectivity, not

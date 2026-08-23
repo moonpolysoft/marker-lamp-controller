@@ -54,5 +54,6 @@ Before releasing Revision B, measure the received component and verify:
 
 Revision B implements all three corrections and passed a fresh KiCad DRC with
 no violations or unconnected pads before submission to OSH Park. The enclosure
-was updated for the relocated J1 and confirmed by prototype printing. The
-fabricated Revision B assembly still requires bench and in-vehicle validation.
+was updated for the relocated J1 and confirmed by prototype printing. A
+fabricated Revision B board has since been assembled, bench tested, installed,
+and verified working in the vehicle.
